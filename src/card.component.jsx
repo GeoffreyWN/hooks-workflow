@@ -8,7 +8,6 @@ border-radius: 10px;
 text-align: center;
 height: auto;
 margin:  50px auto 0px auto;
-width: 60%;
 color: #3e9959;
 padding: 30px;
 `;

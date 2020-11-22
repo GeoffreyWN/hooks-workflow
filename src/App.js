@@ -14,10 +14,16 @@ const Button = styled.button`
   margin: 20px 0px 0px 0px;
 `;
 
+const Title = styled.h1`
+  font-size: 25px;
+  color: mediumblue;
+  font-weight: bold;
+`;
+
 const App =() => {
 
   const [user, setUser] = useState(null)
-  const [searchQuery, setsearchQuery] = useState('Kamren');
+  const [searchQuery, setsearchQuery] = useState('');
 
   useEffect(() => {
     const fetchFunc = async () => {
@@ -34,20 +40,24 @@ const App =() => {
 
   return (
       <Card>
-        <div>
-          <input type='text' value={searchQuery} onChange={event => setsearchQuery(event.target.value)}/>         
+          <Title>React hooks: Search through a list of users </Title>
+           
+        <div className="form__group field">
+          <input type="input" className="form__field" placeholder="Username" value={searchQuery} onChange={event => setsearchQuery(event.target.value)}/>
+          <label htmlFor="name" className="form__label">Username</label>
         </div>
 
-        <Button>Search</Button>
+        {/* <Button>Search</Button> */}
         {user ?
-        <div>
-          <h2>{user.name}</h2>
+        <div style={{border: '0.5px solid green', marginTop: '10px'}}>
+          <h3>{user.name}</h3>
           <h3>{user.username}</h3>
-          <h3>{user.email}</h3>
+          <h4>{user.email}</h4>
           <h4>{user.website}</h4>
           <h5>{user.address.street}</h5>
           <h6>{user.company.name}</h6>
-        </div> : <p>User not found</p>}      
+        </div> : <p>User: {searchQuery} not found</p>}
+        <p style={{fontSize: '12px'}}>users: Bret, Karianne, Delphine</p>       
       </Card>
   );
 }
