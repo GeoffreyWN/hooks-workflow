@@ -26,15 +26,19 @@ const App =() => {
   const [searchQuery, setsearchQuery] = useState('');
 
   useEffect(() => {
-    const fetchFunc = async () => {
-      const searchTerm = searchQuery.charAt(0).toLocaleUpperCase() + searchQuery.slice(1)
-      console.log(searchTerm)
-      const response = await fetch(`https://jsonplaceholder.typicode.com/users?username=${searchTerm}`);
-      const resJson =  await response.json();
 
-      setUser(resJson[0])
+    if (searchQuery.length > 0) {
+        const fetchFunc = async () => {
+        const searchTerm = searchQuery.charAt(0).toLocaleUpperCase() + searchQuery.slice(1)
+        console.log(searchTerm)
+        const response = await fetch(`https://jsonplaceholder.typicode.com/users?username=${searchTerm}`);
+        const resJson =  await response.json();
+  
+        setUser(resJson[0])
+      }
+      fetchFunc();
     }
-    fetchFunc();
+    
     return () => {} // cleanup purposes
   }, [searchQuery])
 
