@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useReducer } from 'react';
 import styled from 'styled-components';
 import './App.css';
 import Card from './card.component';
@@ -20,10 +20,38 @@ const Title = styled.h1`
   font-weight: bold;
 `;
 
-const App =() => {
+const initialState = {
+  user: null,
+  searchQuery: ' '
+}
 
-  const [user, setUser] = useState(null)
-  const [searchQuery, setsearchQuery] = useState('');
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'SET_USER':
+      return { ...state, user: action.payload }
+    case 'SET_SEARCH_QUERY':
+      return { ...state, searchQuery: action.payload  }
+  
+    default:
+      return state;
+  }
+}
+
+const setUser = user => ({
+  type: 'SET_USER',
+  payload: user
+})
+
+const setsearchQuery = queryString => ({
+  type: 'SET_SEARCH_QUERY',
+  payload: queryString
+})
+
+
+const App =() => {
+ 
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const { user, searchQuery} = state;
 
   useEffect(() => {
 
@@ -34,7 +62,7 @@ const App =() => {
         const response = await fetch(`https://jsonplaceholder.typicode.com/users?username=${searchTerm}`);
         const resJson =  await response.json();
   
-        setUser(resJson[0])
+        dispatch(setUser(resJson[0]))
       }
       fetchFunc();
     }
@@ -47,7 +75,7 @@ const App =() => {
           <Title>React hooks: Search through a list of users </Title>
            
         <div className="form__group field">
-          <input type="input" className="form__field" placeholder="Username" value={searchQuery} onChange={event => setsearchQuery(event.target.value)}/>
+          <input type="input" className="form__field" placeholder="Username" value={searchQuery} onChange={event => dispatch(setsearchQuery(event.target.value))}/>
           <label htmlFor="name" className="form__label">Username</label>
         </div>
 
